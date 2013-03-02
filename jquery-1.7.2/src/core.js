@@ -1,11 +1,24 @@
 var jQuery = (function() {
 
+	
+	/**
+	 * 参考文章：http://www.cnblogs.com/fjzhou/archive/2011/05/27/jquery-source-2.html
+	 */
+	
+	
+	
 // Define a local copy of jQuery
+// (选择器，上下文)
 var jQuery = function( selector, context ) {
 		// The jQuery object is actually just the init constructor 'enhanced'
+		//这里rootjQuery的作用不明白
 		return new jQuery.fn.init( selector, context, rootjQuery );
 	},
-
+	
+	
+	//如果在jquery之前引入其他的库，而这些库中jQuery，$被使用，
+	//下面两行的作用的是如果jQuery，$被使用，则交出jQuery，$的使用权
+	
 	// Map over jQuery in case of overwrite
 	_jQuery = window.jQuery,
 
@@ -13,20 +26,26 @@ var jQuery = function( selector, context ) {
 	_$ = window.$,
 
 	// A central reference to the root jQuery(document)
+	// 我的理解是rootjQuery 这个也是一个上下文，不过这个上下文是个根上下文，也是就是说是个最大的上下文
 	rootjQuery,
 
 	// A simple way to check for HTML strings or ID strings
 	// Prioritize #id over <tag> to avoid XSS via location.hash (#9521)
+	// 匹配不是<开始的字符串，区分是#xxx，还是其他的html字符串
 	quickExpr = /^(?:[^#<]*(<[\w\W]+>)[^>]*$|#([\w\-]*)$)/,
 
 	// Check if a string has a non-whitespace character in it
+	//非空格
 	rnotwhite = /\S/,
 
 	// Used for trimming whitespace
+	//左边空格
 	trimLeft = /^\s+/,
+	//右边空格
 	trimRight = /\s+$/,
 
 	// Match a standalone tag
+	//匹配单个的标签，如<div/>
 	rsingleTag = /^<(\w+)\s*\/?>(?:<\/\1>)?$/,
 
 	// JSON RegExp
@@ -36,16 +55,22 @@ var jQuery = function( selector, context ) {
 	rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g,
 
 	// Useragent RegExp
+	//webkit 浏览器
 	rwebkit = /(webkit)[ \/]([\w.]+)/,
+	//opera 浏览器
 	ropera = /(opera)(?:.*version)?[ \/]([\w.]+)/,
+	//ie 浏览器
 	rmsie = /(msie) ([\w.]+)/,
+	//firefox 浏览器
 	rmozilla = /(mozilla)(?:.*? rv:([\w.]+))?/,
 
 	// Matches dashed string for camelizing
+	//匹配 - 的驼峰标示
 	rdashAlpha = /-([a-z]|[0-9])/ig,
 	rmsPrefix = /^-ms-/,
 
 	// Used by jQuery.camelCase as callback to replace()
+	//这个方法看不明白
 	fcamelCase = function( all, letter ) {
 		return ( letter + "" ).toUpperCase();
 	},
@@ -77,7 +102,24 @@ jQuery.fn = jQuery.prototype = {
 	constructor: jQuery,
 	init: function( selector, context, rootjQuery ) {
 		var match, elem, ret, doc;
-
+		
+		/*
+		 * 选择器分一下几种情况
+		 * 
+		 * 1. Handle $(""), $(null), or $(undefined) 为空
+		 * 2. Handle $(DOMElement) DOM节点
+		 * 3. Handle $("body") body 优化，为啥要这样做啊
+		 * 4. Handle HTML strings 这个里面分为两种：
+		 *    * $("<div>hello</div>") $("sss<div>hello</div>ddd")
+		 *    * $("#id")
+		 * 
+		 * 5. $(expr, $(...)) 选择表达式  $("a.className") === rootjQuery.find('a.className')
+		 * 6. HANDLE: $(function) 函数 
+		 * 
+		 * 
+		 */
+		
+		
 		// Handle $(""), $(null), or $(undefined)
 		if ( !selector ) {
 			return this;
@@ -103,13 +145,22 @@ jQuery.fn = jQuery.prototype = {
 		if ( typeof selector === "string" ) {
 			// Are we dealing with HTML string or an ID?
 			if ( selector.charAt(0) === "<" && selector.charAt( selector.length - 1 ) === ">" && selector.length >= 3 ) {
+				//匹配 $('<div>hello</div>')
 				// Assume that strings that start and end with <> are HTML and skip the regex check
 				match = [ null, selector, null ];
 
 			} else {
+				//匹配 $('dddd<div>hello</div>ssss')
 				match = quickExpr.exec( selector );
 			}
 
+			/*
+			 * match 说明
+			 * [要匹配字符串原始的内容, 匹配字符串匹配后的结果, 这个还不知道]
+			 * [#id, undefined, id]
+			 */
+			
+			
 			// Verify a match, and that no context was specified for #id
 			if ( match && (match[1] || !context) ) {
 
@@ -123,6 +174,7 @@ jQuery.fn = jQuery.prototype = {
 					ret = rsingleTag.exec( selector );
 
 					if ( ret ) {
+						//处理$('<div/>')
 						if ( jQuery.isPlainObject( context ) ) {
 							selector = [ document.createElement( ret[1] ) ];
 							jQuery.fn.attr.call( selector, context, true );
@@ -132,6 +184,10 @@ jQuery.fn = jQuery.prototype = {
 						}
 
 					} else {
+						//处理 $('dddd<div>hello</div>ssss')
+						//处理 $('<div>hello</div>')
+						// 这个方法在后面，core.js文件中没有。
+						// 使用一个文档碎片，把所有的新节点附加其上，然后把文档碎片一次性添加到document中
 						ret = jQuery.buildFragment( [ match[1] ], [ doc ] );
 						selector = ( ret.cacheable ? jQuery.clone(ret.fragment) : ret.fragment ).childNodes;
 					}
@@ -367,24 +423,30 @@ jQuery.extend = jQuery.fn.extend = function() {
 jQuery.extend({
 	noConflict: function( deep ) {
 		if ( window.$ === jQuery ) {
+			//注意这里的$可不是jQuery中的$，而是在引jQuery之前的那个库中的$
 			window.$ = _$;
 		}
 
 		if ( deep && window.jQuery === jQuery ) {
+			//注意这里的jQuery可不是jQuery中的jQuery，而是在引jQuery之前的那个库中的jQuery
 			window.jQuery = _jQuery;
 		}
-
+		
+		//注意这里的jQuery可是jQuery中的jQuery，而不是在引jQuery之前的那个库中的jQuery
 		return jQuery;
 	},
 
 	// Is the DOM ready to be used? Set to true once it occurs.
+	// DOM是否加载成功标示
 	isReady: false,
 
 	// A counter to track how many items to wait for before
 	// the ready event fires. See #6781
+	// 一个计数器，用于跟踪在ready事件出发前的等待次数
 	readyWait: 1,
 
 	// Hold (or release) the ready event
+	//继续等待或触发
 	holdReady: function( hold ) {
 		if ( hold ) {
 			jQuery.readyWait++;

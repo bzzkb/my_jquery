@@ -1,0 +1,95 @@
+
+
+构建jquery
+//(选择器，上下文)
+var jQuery = function( selector, context ) {
+		// The jQuery object is actually just the init constructor 'enhanced'
+		//这里rootjQuery的作用不明白
+		return new jQuery.fn.init( selector, context, rootjQuery );
+	}
+
+jquery对象原型
+jQuery.fn = jQuery.prototype = {
+		constructor: jQuery,
+		init: function( selector, context, rootjQuery ) {
+			/*
+			 * 选择器分一下几种情况
+			 * 
+			 * 1. Handle $(""), $(null), or $(undefined) 为空
+			 * 2. Handle $(DOMElement) DOM节点
+			 * 3. Handle $("body") body 优化，为啥要这样做啊
+			 * 4. Handle HTML strings 这个里面分为两种：
+			 *    * $("<div>hello</div>") $("sss<div>hello</div>ddd")
+			 *    * $("#id")
+			 * 
+			 * 5. $(expr, $(...)) 选择表达式  $("a.className") === rootjQuery.find('a.className')
+			 * 6. HANDLE: $(function) 函数 
+			 * 
+			 * 
+			 */
+			
+			//返回jquery对象集合
+		})
+}
+
+//Give the init function the jQuery prototype for later instantiation
+//init函数jQuery的原型为以后的实例
+//没有想好这个怎么翻译
+jQuery.fn.init.prototype = jQuery.fn;
+
+//继承，通过这个方法来扩展方法
+jQuery.extend = jQuery.fn.extend = function() {
+	
+	// 如果传入两个或多个对象，所有对象的属性会被添加到第一个对象target
+	
+	// 如果只传入一个对象，则将对象的属性添加到jQuery对象中。
+	
+	// 用这种方式，我们可以为jQuery命名空间增加新的方法。可以用于编写jQuery插件。
+	
+	// 如果不想改变传入的对象，可以传入一个空对象：$.extend({}, object1, object2);
+	
+	// 默认合并操作是不迭代的，即便target的某个属性是对象或属性，也会被完全覆盖而不是合并
+	// 第一个参数是true，则会迭代合并从object原型继承的属性会被拷贝
+	
+	// undefined值不会被拷贝
+	
+	// 因为性能原因，JavaScript自带类型的属性不会合并
+	
+	// jQuery.extend( target, object1, ... , objectN )
+	// jQuery.extend( [ deep ], target, object1, ... , objectN )
+}
+
+
+
+扩展jquery工具函数
+
+
+jQuery.extend({
+	noConflict: function( deep ) {
+		//释放$控制权
+		//deep=true，并且jQuery已经存在，则释放jQuery的控制权
+		
+		//返回jQuery，如果之前的jQuery存在，在返回之前的jQuery，如果不存在则返回当前的jQuery
+	}),
+	
+	// DOM是否加载成功标示
+	isReady: false,
+
+	// 一个计数器，用于跟踪在ready事件出发前的等待次数
+	readyWait: 1,
+	
+	holdReady: function( hold ) {
+		//继续等待或触发
+	},
+
+	ready: function( wait ) {
+		// 处理dom加载成功
+	},
+
+	bindReady: function() {
+		// 初始化readyList事件处理函数队列
+		// 兼容不同浏览对绑定事件的区别
+		
+	}
+}
+

@@ -1,5 +1,10 @@
 (function( jQuery ) {
 
+	
+	/**
+	 * 参考文章：http://www.cnblogs.com/fjzhou/archive/2011/06/01/jquery-source-5.html
+	 */
+	
 jQuery.support = (function() {
 
 	var support,
