@@ -1,8 +1,8 @@
 (function( jQuery ) {
 
-	/**
-	 * Callback 可以理解为一种数据结构，函数的数据结构
-	 */
+/**
+ * Callback 可以理解为一种数据结构，函数的数据结构
+ */
 	
 	
 // String to Object flags format cache

@@ -11,7 +11,19 @@ var // Static reference to slice
  * 1.在jQuery 1.5中使用deferred对象 ------ http://www.cnblogs.com/sanshi/archive/2011/03/10/1980195.html
  * 2.在jQuery1.5中使用deferred对象 - 拿着放大镜看Promise ------ http://www.cnblogs.com/sanshi/archive/2011/03/11/1981789.html
  * 
- * resolve reject notify resolveWith rejectWith notifyWith done fail progress then always
+ * resolve(args)：解决递延对象，并根据给定的参数调用任何完成的回调函数。
+ * reject(args)：拒绝延迟对象，并根据给定的参数调用任何失败的回调函数。
+ * notify(args)：调用一个给定args的递延对象上的进行中的回调 （progressCallbacks）
+ * 
+ * resolveWith( context, [ args ] )：解决递延对象，并根据给定的上下文和参数调用任何完成的回调函数。
+ * rejectWith( context, [ args ] )：拒绝延迟的对象，并根据给定的上下文和参数调用任何失败的回调函数。
+ * notifyWith( context, [ args ] )：根据给定的上下文和args递延对象上调用progressCallbacks  
+ * 
+ * done( doneCallbacks ):当延迟解决时，doneCallbacks被调用。 
+ * fail ( doneCallbacks ):当延迟拒绝时，doneCallbacks被调用。 
+ * progress( progressCallbacks )： 当递延通过调用生成的进度通知notify或notifyWith，progressCallbacks 被访问
+ * then 
+ * always
  */
 
 
@@ -106,7 +118,7 @@ jQuery.extend({
 
 		// Call given func if any
 		if ( func ) {
-			//这一行看不不懂啊
+			//这一行看不不懂啊,为啥是两个deferred
 			func.call( deferred, deferred );
 		}
 
@@ -144,12 +156,14 @@ jQuery.extend({
 			};
 		}
 		
+		// 构造进度（resolve）回调函数
 		function progressFunc( i ) {
 			return function( value ) {
 				pValues[ i ] = arguments.length > 1 ? sliceDeferred.call( arguments, 0 ) : value;
 				deferred.notifyWith( promise, pValues );
 			};
 		}
+		
 		if ( length > 1 ) {
 			for ( ; i < length; i++ ) {
 				if ( args[ i ] && args[ i ].promise && jQuery.isFunction( args[ i ].promise ) ) {
