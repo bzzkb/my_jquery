@@ -11,6 +11,7 @@ var // Static reference to slice
  * 1.在jQuery 1.5中使用deferred对象 ------ http://www.cnblogs.com/sanshi/archive/2011/03/10/1980195.html
  * 2.在jQuery1.5中使用deferred对象 - 拿着放大镜看Promise ------ http://www.cnblogs.com/sanshi/archive/2011/03/11/1981789.html
  * 
+ * resolve reject notify resolveWith rejectWith notifyWith done fail progress then always
  */
 
 

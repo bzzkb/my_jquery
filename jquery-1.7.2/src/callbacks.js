@@ -9,7 +9,7 @@
 var flagsCache = {};
 
 // Convert String-formatted flags into Object-formatted ones and store in cache
-// 创建一个标示：一个用空格标记分隔的标志可选列表,用来改变回调列表中的行为
+// 创建一个标识：一个用空格标记分隔的标志可选列表,用来改变回调列表中的行为
 function createFlags( flags ) {
 	var object = flagsCache[ flags ] = {},
 		i, length;

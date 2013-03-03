@@ -1,4 +1,4 @@
-module("callbacks", { teardown: moduleTeardown });
+//module("callbacks", { teardown: moduleTeardown });
 
 (function() {
 
@@ -47,7 +47,18 @@ jQuery.each( tests, function( flags, resultString ) {
 
 				var cblist;
 					results = resultString.split( /\s+/ );
-
+				
+					console.log(results)
+//					console.log(results.shift())
+//					console.log(results.shift())
+//					console.log(results.shift())
+//					console.log(results.shift())
+//					console.log(results.shift())
+//					console.log(results.shift())
+//					console.log(results.shift())
+//					console.log(results.shift())
+					
+				
 				// Basic binding and firing
 				output = "X";
 				cblist = jQuery.Callbacks( flags );
@@ -127,6 +138,7 @@ jQuery.each( tests, function( flags, resultString ) {
 					outputA();
 				}, outputB );
 				cblist.fire();
+				//1
 				strictEqual( output, results.shift(), "Proper ordering" );
 
 				// Add and fire again
@@ -135,10 +147,13 @@ jQuery.each( tests, function( flags, resultString ) {
 					cblist.add( outputC );
 					outputA();
 				}, outputB );
+				//2
 				strictEqual( output, results.shift(), "Add after fire" );
 
 				output = "X";
 				cblist.fire();
+				//3
+				//console.log(cblist.list)
 				strictEqual( output, results.shift(), "Fire again" );
 
 				// Multiple fire
@@ -153,14 +168,17 @@ jQuery.each( tests, function( flags, resultString ) {
 				cblist.add( function( str ) {
 					output += str;
 				} );
+				//4
 				strictEqual( output, results.shift(), "Multiple fire (first new callback)" );
 				output = "X";
 				cblist.fire( "B" );
+				//5
 				strictEqual( output, results.shift(), "Multiple fire (second fire)" );
 				output = "X";
 				cblist.add( function( str ) {
 					output += str;
 				} );
+				//6
 				strictEqual( output, results.shift(), "Multiple fire (second new callback)" );
 
 				// Return false
@@ -169,11 +187,13 @@ jQuery.each( tests, function( flags, resultString ) {
 				cblist.add( outputA, function() { return false; }, outputB );
 				cblist.add( outputA );
 				cblist.fire();
+				//7
 				strictEqual( output, results.shift(), "Callback returning false" );
 
 				// Add another callback (to control lists with memory do not fire anymore)
 				output = "X";
 				cblist.add( outputC );
+				//8
 				strictEqual( output, results.shift(), "Adding a callback after one returned false" );
 
 			});
