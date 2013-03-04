@@ -17,6 +17,14 @@ function createFlags( flags ) {
 	for ( i = 0, length = flags.length; i < length; i++ ) {
 		object[ flags[i] ] = true;
 	}
+	/**
+	 * object = {
+	 * 	'once': true,
+	 *  'memory': true,
+	 *  'unique': true,
+	 *  'stopOnFalse': true
+	 * }
+	 */
 	return object;
 }
 

@@ -156,6 +156,7 @@ jQuery.each( tests, function( flags, resultString ) {
 				//console.log(cblist.list)
 				strictEqual( output, results.shift(), "Fire again" );
 
+				
 				// Multiple fire
 				output = "X";
 				cblist = jQuery.Callbacks( flags );
@@ -170,6 +171,8 @@ jQuery.each( tests, function( flags, resultString ) {
 				} );
 				//4
 				strictEqual( output, results.shift(), "Multiple fire (first new callback)" );
+				
+				
 				output = "X";
 				cblist.fire( "B" );
 				//5
@@ -181,6 +184,9 @@ jQuery.each( tests, function( flags, resultString ) {
 				//6
 				strictEqual( output, results.shift(), "Multiple fire (second new callback)" );
 
+				
+				
+				
 				// Return false
 				output = "X";
 				cblist = jQuery.Callbacks( flags );

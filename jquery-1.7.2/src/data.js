@@ -6,11 +6,13 @@ var rbrace = /^(?:\{.*\}|\[.*\])$/,
 jQuery.extend({
 	cache: {},
 
-	// Please use with caution
+	// Please use with caution 谨慎使用，为啥啊？
 	uuid: 0,
 
 	// Unique for each copy of jQuery on the page
 	// Non-digits removed to match rinlinejQuery
+	// jQuery.fn.jquery 这个是jquery 的版本号
+	// jQuery172009136927324847843
 	expando: "jQuery" + ( jQuery.fn.jquery + Math.random() ).replace( /\D/g, "" ),
 
 	// The following elements throw uncatchable exceptions if you
@@ -21,13 +23,18 @@ jQuery.extend({
 		"object": "clsid:D27CDB6E-AE6D-11cf-96B8-444553540000",
 		"applet": true
 	},
-
+	// elem节点上是否有数据
 	hasData: function( elem ) {
 		elem = elem.nodeType ? jQuery.cache[ elem[jQuery.expando] ] : elem[ jQuery.expando ];
 		return !!elem && !isEmptyDataObject( elem );
 	},
-
+	/**
+	 * elem：节点
+	 * name：key
+	 * data：value
+	 */
 	data: function( elem, name, data, pvt /* Internal Use Only */ ) {
+		//判断这个节点是不是可以缓存数据
 		if ( !jQuery.acceptData( elem ) ) {
 			return;
 		}
@@ -90,6 +97,7 @@ jQuery.extend({
 		// jQuery data() is stored in a separate object inside the object's internal data
 		// cache in order to avoid key collisions between internal data and user-defined
 		// data.
+		//jQuery的数据（）被存储在该对象的内部的数据高速缓存内的一个单独的对象，以避免内部数据和用户定义的数据的键之间的碰撞。
 		if ( !pvt ) {
 			if ( !thisCache.data ) {
 				thisCache.data = {};
@@ -104,6 +112,8 @@ jQuery.extend({
 
 		// Users should not attempt to inspect the internal events object using jQuery.data,
 		// it is undocumented and subject to change. But does anyone listen? No.
+		
+		//用户不应该尝试使用jQuery.data检查内部事件对象的，它是无证和改变。但没有人听呢？号
 		if ( isEvents && !thisCache[ name ] ) {
 			return privateCache.events;
 		}
@@ -231,6 +241,17 @@ jQuery.extend({
 	},
 
 	// A method for determining if a DOM node can handle the data expando
+	// 确定一个DOM 节点恩能不能处理the data expando
+	/**
+	 * 	ok( !jQuery.acceptData( document.createElement("embed") ), "embed" );
+		ok( !jQuery.acceptData( document.createElement("applet") ), "applet" );
+		var flash = document.createElement("object");
+		flash.setAttribute("classid", "clsid:D27CDB6E-AE6D-11cf-96B8-444553540000");
+		ok( jQuery.acceptData( flash ), "flash" );
+		var applet = document.createElement("object");
+		applet.setAttribute("classid", "clsid:8AD9C840-044E-11D1-B3E9-00805F499D93");
+		ok( !jQuery.acceptData( applet ), "applet" );
+	 */
 	acceptData: function( elem ) {
 		if ( elem.nodeName ) {
 			var match = jQuery.noData[ elem.nodeName.toLowerCase() ];
@@ -244,7 +265,9 @@ jQuery.extend({
 	}
 });
 
+//扩展到jquery上
 jQuery.fn.extend({
+	//对外公开的data方法
 	data: function( key, value ) {
 		var parts, part, attr, name, l,
 			elem = this[0],
@@ -252,6 +275,7 @@ jQuery.fn.extend({
 			data = null;
 
 		// Gets all values
+		// 获得存储的数据
 		if ( key === undefined ) {
 			if ( this.length ) {
 				data = jQuery.data( elem );
@@ -275,6 +299,7 @@ jQuery.fn.extend({
 		}
 
 		// Sets multiple values
+		// 一直以来已为这个key只能是个字符串，由此看来，还可以是一个对象
 		if ( typeof key === "object" ) {
 			return this.each(function() {
 				jQuery.data( this, key );
@@ -311,7 +336,7 @@ jQuery.fn.extend({
 			});
 		}, null, value, arguments.length > 1, null, false );
 	},
-
+	//对外公开的removeData方法
 	removeData: function( key ) {
 		return this.each(function() {
 			jQuery.removeData( this, key );
@@ -320,8 +345,11 @@ jQuery.fn.extend({
 });
 
 function dataAttr( elem, key, data ) {
-	// If nothing was found internally, try to fetch any
-	// data from the HTML5 data-* attribute
+	// If nothing was found internally, try to fetch any data from the HTML5 data-* attribute
+	// 如果没有发现内部，尝试获取任何数据的HTML5数据属性
+	// 奥，这里的意思是说，现在jquery 的内部找key=name存储的值，要是没有找到，再看html5存储的数据
+	
+	// 为啥是 data === undefined
 	if ( data === undefined && elem.nodeType === 1 ) {
 
 		var name = "data-" + key.replace( rmultiDash, "-$1" ).toLowerCase();
@@ -350,6 +378,7 @@ function dataAttr( elem, key, data ) {
 }
 
 // checks a cache object for emptiness
+// 注意是对象的方法不能包含名字为toJSON的方法，可以使空的对象
 function isEmptyDataObject( obj ) {
 	for ( var name in obj ) {
 
