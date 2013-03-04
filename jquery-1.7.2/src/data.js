@@ -7,12 +7,14 @@ jQuery.extend({
 	cache: {},
 
 	// Please use with caution 谨慎使用，为啥啊？
+	// 明白了，这个uuid是全局cache的key，这个值得保证唯一
 	uuid: 0,
 
 	// Unique for each copy of jQuery on the page
 	// Non-digits removed to match rinlinejQuery
-	// jQuery.fn.jquery 这个是jquery 的版本号
+	// jQuery.fn.jquery 这个是jquery 的版本号 ，这个在core.js中定义了
 	// jQuery172009136927324847843
+	// 1.7.20.6902577364929052 把非数字替换为空
 	expando: "jQuery" + ( jQuery.fn.jquery + Math.random() ).replace( /\D/g, "" ),
 
 	// The following elements throw uncatchable exceptions if you
