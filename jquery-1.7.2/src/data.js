@@ -1,3 +1,30 @@
+
+
+/**
+ * jquery中的data这个功能的原理如下：
+ * 
+ * jquery在全局定义了一个叫cache的变量，所有的数据都是存在这个变量里面
+ * 
+ * 这个存取的原则是这样的
+ * 
+ * expando = "jQuery" + ( jQuery.fn.jquery + Math.random() ).replace( /\D/g, "" )
+ * 
+ * 你给那个节点使用jquery的data方法存数据，则jquery 会在这个节点设置一个叫 expando的值，每次，页面刷新，这个值是不一样
+ * 然后给 expando 在赋值 uuid，而这个uuid的值是自增的值，也就是说你使用一个jquery.data()方法，那么这个uuid就加1
+ * 
+ * 而这个uuid就是cache中的key值。
+ * 
+ * 
+ * 
+ * 这里有两篇文章介绍data的，以及怎么避免循环引用
+ * http://www.cnblogs.com/webflash/archive/2010/01/03/1638232.html
+ * http://marlonyao.blogspot.com/2009/11/jquerydata.html
+ * 
+ */
+
+
+
+
 (function( jQuery ) {
 
 var rbrace = /^(?:\{.*\}|\[.*\])$/,
@@ -15,6 +42,7 @@ jQuery.extend({
 	// jQuery.fn.jquery 这个是jquery 的版本号 ，这个在core.js中定义了
 	// jQuery172009136927324847843
 	// 1.7.20.6902577364929052 把非数字替换为空
+	//expando作为elem一个新加属性，为了防止与用户自己定义的产生冲突，这里采用可变后缀
 	expando: "jQuery" + ( jQuery.fn.jquery + Math.random() ).replace( /\D/g, "" ),
 
 	// The following elements throw uncatchable exceptions if you

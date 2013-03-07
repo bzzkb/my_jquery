@@ -41,6 +41,7 @@ jQuery.support = (function() {
 
 	support = {
 		// IE strips leading whitespace when .innerHTML is used
+		// innerHTML属性是否严格按照代码渲染。IE6-8中会去掉前置的空白。
 		leadingWhitespace: ( div.firstChild.nodeType === 3 ),
 
 		// Make sure that tbody elements aren't automatically inserted
