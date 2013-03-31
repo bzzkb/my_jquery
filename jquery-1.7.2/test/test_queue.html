@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>jQuery Test Suite</title>
+	<link rel="Stylesheet" media="screen" href="qunit/qunit/qunit.css" />
+	<link rel="Stylesheet" media="screen" href="data/testsuite.css" />
+	<script src="jquery.js"></script>
+	<!--
+	<script src="qunit/qunit/qunit.js"></script>
+	<script src="unit/queue.js"></script>
+	-->
+</head>
+
+<body id="body">
+	<h1 id="qunit-header"><a href="/jquery/test/index.html">jQuery Test Suite</a>
+		<a href="?jquery=min">(minified)</a>
+	</h1>
+	<h2 id="qunit-banner"> </h2>
+	<div id="qunit-testrunner-toolbar"> </div>
+	<h2 id="qunit-userAgent"> </h2>
+	<ol id="qunit-tests"> </ol>
+	
+	
+	<div id="AAAA"> </div>
+	<div id="BBBB"> </div>
+
+	<script>
+		$('#AAAA').queue( 'test', function(){ alert(1); } )
+		$('#AAAA').queue( 'test', function(){ alert(2); } )
+		$('#AAAA').queue( 'test', function(){ alert(3); } )
+		$('#AAAA').queue( 'rrrtest', function(){ alert(3); } )
+		
+		$('#BBBB').queue( 'test', function(){ alert(1); } )
+		$('#BBBB').queue( 'test', function(){ alert(2); } )
+		$('#BBBB').queue( 'test', function(){ alert(3); } )
+		
+		console.log(window)
+		console.log($.expando)
+		console.log($('#AAAA')[0][$.expando])
+		console.log($('#BBBB')[0][$.expando])
+		
+		$('#AAAA').data('dataAAAName', 'value-----')
+		$('#AAAA').data('dataAAANameasdasdsa', 'valueasdsad-----')
+	</script>
+
+</body>
+</html>

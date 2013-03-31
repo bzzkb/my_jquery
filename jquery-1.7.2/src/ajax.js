@@ -2,6 +2,7 @@
 
 var r20 = /%20/g,
 	rbracket = /\[\]$/,
+	//回车
 	rCRLF = /\r?\n/g,
 	rhash = /#.*$/,
 	rheaders = /^(.*?):[ \t]*([^\r\n]*)\r?$/mg, // IE leaves an \r character at EOL
@@ -59,7 +60,7 @@ try {
 	ajaxLocation = ajaxLocation.href;
 }
 
-// Segment location into parts
+// Segment location into parts 切分url
 ajaxLocParts = rurl.exec( ajaxLocation.toLowerCase() ) || [];
 
 // Base "constructor" for jQuery.ajaxPrefilter and jQuery.ajaxTransport
@@ -138,7 +139,7 @@ function inspectPrefiltersOrTransports( structure, options, originalOptions, jqX
 	return selection;
 }
 
-// A special extend for ajax options
+// A special extend for ajax options 扩展ajax
 // that takes "flat" options (not to be deep extended)
 // Fixes #9887
 function ajaxExtend( target, src ) {
